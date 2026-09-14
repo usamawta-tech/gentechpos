@@ -1,0 +1,78 @@
+// Prisma schema for the POS system
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model StoreSetting {
+  id        Int      @id
+  storeName String   @default("GenTech Store")
+  address   String   @default("")
+  phone     String   @default("")
+  footer    String   @default("Thank you for your purchase!")
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("CASHIER") // ADMIN | CASHIER
+  createdAt DateTime @default(now())
+  sales     Sale[]
+}
+
+model Customer {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String?
+  phone     String?
+  createdAt DateTime @default(now())
+  sales     Sale[]
+}
+
+model Product {
+  id        Int         @id @default(autoincrement())
+  name      String
+  barcode   String?     @unique
+  price     Float
+  stock     Int         @default(0)
+  category  String      @default("General")
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  saleItems SaleItem[]
+}
+
+model Sale {
+  id            Int        @id @default(autoincrement())
+  createdAt     DateTime   @default(now())
+  subtotal      Float
+  discount      Float      @default(0)
+  tax           Float      @default(0)
+  total         Float
+  paymentMethod String     @default("Cash") // Cash | Card | Other
+  items         SaleItem[]
+
+  cashier   User? @relation(fields: [cashierId], references: [id], onDelete: SetNull)
+  cashierId Int?
+
+  customer   Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  customerId Int?
+}
+
+model SaleItem {
+  id        Int      @id @default(autoincrement())
+  sale      Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  saleId    Int
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productId Int?
+  name      String // snapshot of product name at time of sale
+  price     Float // snapshot of unit price at time of sale
+  quantity  Int
+}

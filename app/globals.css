@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+/* Enable class-based dark mode: `dark:` applies when <html class="dark"> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Hide number input spinners for a cleaner look */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Thermal receipt print styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #receipt,
+  #receipt * {
+    visibility: visible;
+  }
+  #receipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80mm;
+  }
+  @page {
+    size: 80mm auto;
+    margin: 0;
+  }
+}
