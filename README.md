@@ -16,6 +16,18 @@ reporting, and emailed receipts.
 - **Staff & roles** — user accounts with `ADMIN` and `CASHIER` roles, JWT session auth.
 - **Store settings** — configurable store name, address, phone, and receipt footer.
 
+## Screenshots
+
+> Add your images to a `screenshots/` folder in the repo root and the previews below will render.
+
+| POS checkout | Dashboard |
+| --- | --- |
+| ![POS checkout](screenshots/pos.png) | ![Dashboard](screenshots/dashboard.png) |
+
+| Products | Sales & receipts |
+| --- | --- |
+| ![Products](screenshots/products.png) | ![Sales](screenshots/sales.png) |
+
 ## Tech stack
 
 - **Framework:** [Next.js 16](https://nextjs.org/) (App Router) + React 19
